@@ -9,10 +9,11 @@
 #include "FreeRTOS.h"
 #include "task.h"
 
+// Include Task Handlers for each task for task communication
+#include "taskHandlers.h"
+
 // Display Color (For debugging purposes)
 #include "display_color.h"
-
-#include "taskHandlers.h"
 
 
 void myTaskTest (void *p);
