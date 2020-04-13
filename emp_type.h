@@ -24,6 +24,14 @@
 
 /*****************************    Defines    *******************************/
 
+#define FALSE	0
+#define TRUE  !FALSE
+#define NULL	((void *)0)
+#define NEGATIVE 0
+#define POSITIVE 1
+#define LEFT    0
+#define RIGHT   1
+
 typedef unsigned char  			BOOLEAN;
 typedef unsigned char  			INT8U;     /* Unsigned  8 bit quantity              */
 typedef signed   char  			INT8S;     /* Signed    8 bit quantity              */

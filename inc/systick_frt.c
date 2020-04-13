@@ -23,8 +23,8 @@
 #include "emp_type.h"
 /*****************************    Defines    *******************************/
 
-#define SYSTICK_RELOAD_VALUE 1600              // 0.1 mS
-// Because of 24 bit we have MAX 2^24 * 0.0001 = 27 min timing from vTaskDelay()
+#define SYSTICK_RELOAD_VALUE 16000              // 1mS
+// Because of 24 bit we have MAX 2^24 * 0.001 = x min timing from vTaskDelay()
 
 // Missing definitions in tm4c123gh6pm.h file
 #define NVIC_INT_CTRL_PEND_SYST   0x04000000    // Pend a systick int
