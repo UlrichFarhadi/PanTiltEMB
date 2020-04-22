@@ -41,6 +41,7 @@ SDU Semesterproject 4 Group 1
 #include "queueHandlers.h"
 #include "semaphoreHandlers.h"
 #include "file.h"
+#include "protocol_function.h"
 //#include "tmodel.h"
 
 /*****************************    Defines    *******************************/
@@ -87,6 +88,8 @@ int main(void)
 
   Q_KEY = xQueueCreate(QUEUE_SIZE, sizeof(INT8U));
   Q_LCD = xQueueCreate(QUEUE_SIZE, sizeof(INT8U));
+  Q_SPIDATAM1 = xQueueCreate(1, sizeof(INT16U));
+  Q_SPIDATAM2 = xQueueCreate(1, sizeof(INT16U));
 
   // Create the semaphore
   // ----------------

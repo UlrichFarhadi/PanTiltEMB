@@ -85,5 +85,4 @@ BOOLEAN get_square_key()
     }
     return(result_square);
 }
-
 /****************************** End Of Module *******************************/

@@ -8,9 +8,11 @@
 // FreeRTOS include files
 #include "FreeRTOS.h"
 #include "task.h"
+#include "queue.h"
 
 // Include Task Handlers for each task for task communication
 #include "taskHandlers.h"
+#include "queueHandlers.h" // queue.h file comes from this include as well
 
 // Display Color (For debugging purposes)
 #include "display_color.h"

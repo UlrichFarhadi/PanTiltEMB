@@ -6,6 +6,8 @@
 
   QueueHandle_t Q_KEY;
   QueueHandle_t Q_LCD;
+  QueueHandle_t Q_SPIDATAM1;
+  QueueHandle_t Q_SPIDATAM2;
 
 /*****************************    Defines    *******************************/
 #define QUEUE_SIZE   128

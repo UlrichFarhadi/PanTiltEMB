@@ -90,10 +90,10 @@ void init_master_spi() // Following the guide on page 965 (15.4) in the datashee
 // - The Data Size (DSS)
 // * We are using the Freescale SPI mode.
 // * Not changing the clock rate
-// * 14 Bit data size (0xD)
+// * 16 Bit data size (0xF)
 // * Sample on the first clock edge
 // Mode 00 (SPI MODE 0), CS is low when data is transferred, bit is read (sampled) on rising clock edge.
-    SSI2_CR0_R = (0xD<<0);
+    SSI2_CR0_R = (0xF<<0);
 
 // 6. Optionally...
 // 7. Enable the SSI by setting the SSE  bit in the SSICR1 register.

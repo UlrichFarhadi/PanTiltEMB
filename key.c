@@ -22,8 +22,8 @@
 #include "tm4c123gh6pm.h"
 #include "emp_type.h"
 #include "queueHandlers.h"
+#include "key.h"
 
-//#include "tmodel.h"
 
 INT8U row( INT8U y )
 {
