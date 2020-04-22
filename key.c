@@ -66,7 +66,7 @@ BOOLEAN check_column(INT8U x)
     if( y )                                         // If one of them are set...
     {                                               // ...we first find the row number with the function row()
         INT8U ch = key_catch( x, row(y) );          // Now that we have the row and column we look up the corresponding character using the function key_catch
-        xQueueSend( Q_KEY, ch, 0 );                  // Put the character in a queue so it can be used by another task
+        xQueueSend( Q_KEY, &ch, 0 );                  // Put the character in a queue so it can be used by another task
         return 1;
     }
     return 0;

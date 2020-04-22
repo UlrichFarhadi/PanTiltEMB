@@ -80,16 +80,16 @@ void menu_task(void *p)
 *   Function :
 ******************************************************************************/
 {
-  BOOLEAN SHOW_CURRENT_POS = FALSE;
-  BOOLEAN SHOW_WANTED_POS = FALSE;
-  BOOLEAN SHOW_ENTER_POS_M1 = FALSE;
-  BOOLEAN SHOW_ENTER_POS_M2 = FALSE;
-  BOOLEAN SHOW_HOME = FALSE;
-  BOOLEAN SHOW_ENTER_HOME_M1 = FALSE;
-  BOOLEAN SHOW_ENTER_HOME_M2 = FALSE;
+  SHOW_CURRENT_POS = FALSE;
+  SHOW_WANTED_POS = FALSE;
+  SHOW_ENTER_POS_M1 = FALSE;
+  SHOW_ENTER_POS_M2 = FALSE;
+  SHOW_HOME = FALSE;
+  SHOW_ENTER_HOME_M1 = FALSE;
+  SHOW_ENTER_HOME_M2 = FALSE;
 
-  BOOLEAN VALID_POSITION_M1 = FALSE;
-  BOOLEAN VALID_POSITION_M2 = FALSE;
+  VALID_POSITION_M1 = FALSE;
+  VALID_POSITION_M2 = FALSE;
 
   MM_state = CURRENT_POSITION;
   WP_state = MOTOR_1;
@@ -115,13 +115,13 @@ void menu_task(void *p)
         break;
 
       case WANTED_POSITION: // If main menu is at wanted position submenu
-        if(get_square_key() == TRUE || SHOW_WANTED_POS == TRUE)
+        if(SHOW_WANTED_POS == TRUE || get_square_key() == TRUE)
         {
           SHOW_WANTED_POS = TRUE; // Makes sure we enter the if statement
           switch (WP_state)
           {
             case MOTOR_1:
-              if (get_square_key() == TRUE || SHOW_ENTER_POS_M1 == TRUE)
+              if ((SHOW_ENTER_POS_M1 == TRUE) || (get_square_key() == TRUE))
               {
                 SHOW_ENTER_POS_M1 = TRUE; // Makes sure we enter the if statement
                 //KEY_BOARD_ACTIVE(); // Activate buttons for user inputs (For wanted position)
@@ -138,7 +138,7 @@ void menu_task(void *p)
               }
               break;
             case MOTOR_2:
-              if (get_square_key() == TRUE || SHOW_ENTER_POS_M2 == TRUE)
+              if (SHOW_ENTER_POS_M2 == TRUE || get_square_key() == TRUE)
               {
                 SHOW_ENTER_POS_M2 = TRUE; // Makes sure we enter the if statement
                 //KEY_BOARD_ACTIVE(); // Activate buttons for user inputs (For wanted position)
@@ -164,12 +164,12 @@ void menu_task(void *p)
         break;
 
       case HOME_POSTION: // If main menu is at home submenu
-        if (get_square_key() == TRUE || SHOW_HOME == TRUE)
+        if (SHOW_HOME == TRUE || get_square_key() == TRUE)
         {
           SHOW_HOME = TRUE; // Makes sure we enter the if statement
           switch (H_state) {
             case HOME_M1:
-              if (get_square_key() == TRUE || SHOW_ENTER_HOME_M1 == TRUE)
+              if (SHOW_ENTER_HOME_M1 == TRUE || get_square_key() == TRUE)
               {
                 SHOW_ENTER_HOME_M1 = TRUE; // Makes sure we enter the if statement
                 if (get_square_key() == TRUE)
@@ -184,7 +184,7 @@ void menu_task(void *p)
               }
               break;
             case HOME_M2:
-              if (get_square_key() == TRUE || SHOW_ENTER_HOME_M2)
+              if (SHOW_ENTER_HOME_M2 || get_square_key() == TRUE)
               {
                 SHOW_ENTER_HOME_M2 = TRUE; // Makes sure we enter the if statement
                 if (get_square_key() == TRUE)
@@ -207,7 +207,7 @@ void menu_task(void *p)
         }
         break;
       }
-      vTaskDelay( 2000 );
+      vTaskDelay( 400 );
       xSemaphoreGive(SEM_MENU_UPDATED);
   }
 }

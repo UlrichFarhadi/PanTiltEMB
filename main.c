@@ -86,7 +86,7 @@ int main(void)
   // ----------------
 
   Q_KEY = xQueueCreate(QUEUE_SIZE, sizeof(INT8U));
-  Q_LCD = xQueueCreate(QUEUE_SIZE, sizeof(int));
+  Q_LCD = xQueueCreate(QUEUE_SIZE, sizeof(INT8U));
 
   // Create the semaphore
   // ----------------
@@ -95,7 +95,7 @@ int main(void)
   // Start the tasks.
   // ----------------
   xTaskCreate(myTaskTest, "taskTest", configMINIMAL_STACK_SIZE, NULL, LOW_PRIO, &myTaskTestHandle);
-  xTaskCreate(spiTask, "spiTask", configMINIMAL_STACK_SIZE, NULL, LOW_PRIO, &spiTaskHandle);
+  xTaskCreate(spiTask, "spiTask", configMINIMAL_STACK_SIZE, NULL, HIGH_PRIO, &spiTaskHandle);
   xTaskCreate(lcd_task, "lcdTask", configMINIMAL_STACK_SIZE, NULL, LOW_PRIO, &lcdTaskHandle);
   xTaskCreate(key_task, "keyTask", configMINIMAL_STACK_SIZE, NULL, LOW_PRIO, &keyTaskHandle);
   xTaskCreate(display_menu_task, "displayMenuTask", configMINIMAL_STACK_SIZE, NULL, LOW_PRIO, &displayMenuTaskHandle);
