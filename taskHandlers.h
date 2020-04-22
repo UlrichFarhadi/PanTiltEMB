@@ -6,5 +6,9 @@
 
 TaskHandle_t spiTaskHandle;     // Task Handle for spiTask
 TaskHandle_t myTaskTestHandle;  // Task handle for myTaskTest
+TaskHandle_t lcdTaskHandle;  // Task handle for lcdTaskHandle
+TaskHandle_t keyTaskHandle;  // Task handle for keyTaskHandle
+TaskHandle_t displayMenuTaskHandle;  // Task handle for displayMenuTaskHandle
+TaskHandle_t menuTaskHandle;  // Task handle for menuTaskHandle
 
 #endif /* FILES_TASKHANDLERS_H_ */

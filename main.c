@@ -16,6 +16,8 @@ SDU Semesterproject 4 Group 1
 // FreeRTOS include files
 #include "FreeRTOS.h"   // IMPORTANT!!! Always include FreeRTOS.h before task.h or queue.h etc.
 #include "task.h"
+#include "queue.h"
+#include "semphr.h"
 
 // SPI protocol setup and functions.
 #include "spi_config.h"
@@ -23,6 +25,10 @@ SDU Semesterproject 4 Group 1
 // Tasks
 #include "tasktest.h" // (An example of a setup of a task, use this for reference)
 #include "spiTask.h"
+#include "menu.h"
+#include "lcd.h"
+#include "ui.h"
+#include "key.h"
 
 // Display Color (For Debugging Purposes)
 #include "display_color.h"
@@ -32,6 +38,10 @@ SDU Semesterproject 4 Group 1
 
 // Others
 #include "taskHandlers.h"
+#include "queueHandlers.h"
+#include "semaphoreHandlers.h"
+#include "file.h"
+//#include "tmodel.h"
 
 /*****************************    Defines    *******************************/
 //#define USERTASK_STACK_SIZE configMINIMAL_STACK_SIZE
@@ -56,6 +66,7 @@ static void setupHardware(void)
   init_systick();       // Initialize Real time clock SystickTimer for Ticks
   init_gpio();          // Initialize GPIO pins for on board LEDs,
                         // Button Matrix and LCD.
+  init_files();
   init_master_spi();    // Initialize the spi protocol
 }
 
@@ -71,10 +82,24 @@ int main(void)
 
   setupHardware();
 
+  // Create the queues
+  // ----------------
+
+  Q_KEY = xQueueCreate(QUEUE_SIZE, sizeof(INT8U));
+  Q_LCD = xQueueCreate(QUEUE_SIZE, sizeof(int));
+
+  // Create the semaphore
+  // ----------------
+  SEM_MENU_UPDATED = xSemaphoreCreateMutex();
+
   // Start the tasks.
   // ----------------
   xTaskCreate(myTaskTest, "taskTest", configMINIMAL_STACK_SIZE, NULL, LOW_PRIO, &myTaskTestHandle);
-  xTaskCreate(spiTask, "spiTask", configMINIMAL_STACK_SIZE, NULL, HIGH_PRIO, &spiTaskHandle);
+  xTaskCreate(spiTask, "spiTask", configMINIMAL_STACK_SIZE, NULL, LOW_PRIO, &spiTaskHandle);
+  xTaskCreate(lcd_task, "lcdTask", configMINIMAL_STACK_SIZE, NULL, LOW_PRIO, &lcdTaskHandle);
+  xTaskCreate(key_task, "keyTask", configMINIMAL_STACK_SIZE, NULL, LOW_PRIO, &keyTaskHandle);
+  xTaskCreate(display_menu_task, "displayMenuTask", configMINIMAL_STACK_SIZE, NULL, LOW_PRIO, &displayMenuTaskHandle);
+  xTaskCreate(menu_task, "menuTask", configMINIMAL_STACK_SIZE, NULL, LOW_PRIO, &menuTaskHandle);
 
 
   // Start the scheduler.
