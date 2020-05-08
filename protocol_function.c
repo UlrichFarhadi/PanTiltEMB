@@ -25,6 +25,8 @@ INT16U home_Sw2_MASK     = 1;
 INT16U home_Sw1_MASK     = 2;
 INT16U motordir_MASK     = 4;
 INT16U encodervalue_MASK = 0x7FF0; // dec = 32752 --> 0b 0111 1111 1111 0000
+
+
 /*****************************   Constants   *******************************/
 
 /*****************************   Variables   *******************************/

@@ -29,6 +29,7 @@ SDU Semesterproject 4 Group 1
 #include "lcd.h"
 #include "ui.h"
 #include "key.h"
+#include "regulering.h" //Regulerings task
 
 // Display Color (For Debugging Purposes)
 #include "display_color.h"
@@ -90,19 +91,32 @@ int main(void)
   Q_LCD = xQueueCreate(QUEUE_SIZE, sizeof(INT8U));
   Q_SPIDATAM1 = xQueueCreate(1, sizeof(INT16U));
   Q_SPIDATAM2 = xQueueCreate(1, sizeof(INT16U));
+  Q_SPIDATATXM1 = xQueueCreate(1, sizeof(INT16U));
+  Q_SPIDATATXM2 = xQueueCreate(1, sizeof(INT16U));
+  Q_NEWPOSM1 = xQueueCreate(1, sizeof(INT16U));
+  Q_NEWPOSM2 = xQueueCreate(1, sizeof(INT16U));
 
   // Create the semaphore
   // ----------------
   SEM_MENU_UPDATED = xSemaphoreCreateMutex();
 
+
+  // Used for testing
+  // ----------------
+  // INT16U testM1 = 240;
+  // INT16U testM2 = 128;
+  // xQueueOverwrite(Q_SPIDATAM1,&testM1);
+  // xQueueOverwrite(Q_SPIDATAM2,&testM2);
+
   // Start the tasks.
   // ----------------
   xTaskCreate(myTaskTest, "taskTest", configMINIMAL_STACK_SIZE, NULL, LOW_PRIO, &myTaskTestHandle);
-  xTaskCreate(spiTask, "spiTask", configMINIMAL_STACK_SIZE, NULL, HIGH_PRIO, &spiTaskHandle);
+//  xTaskCreate(spiTask, "spiTask", configMINIMAL_STACK_SIZE, NULL, HIGH_PRIO, &spiTaskHandle);
   xTaskCreate(lcd_task, "lcdTask", configMINIMAL_STACK_SIZE, NULL, LOW_PRIO, &lcdTaskHandle);
   xTaskCreate(key_task, "keyTask", configMINIMAL_STACK_SIZE, NULL, LOW_PRIO, &keyTaskHandle);
   xTaskCreate(display_menu_task, "displayMenuTask", configMINIMAL_STACK_SIZE, NULL, LOW_PRIO, &displayMenuTaskHandle);
   xTaskCreate(menu_task, "menuTask", configMINIMAL_STACK_SIZE, NULL, LOW_PRIO, &menuTaskHandle);
+//  xTaskCreate(reg_Task, "regTask", configMINIMAL_STACK_SIZE, NULL, HIGH_PRIO, &regTaskHandle);
 
 
   // Start the scheduler.

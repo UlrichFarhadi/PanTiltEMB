@@ -25,6 +25,8 @@
 ///#include "tmodel.h"
 #include "ui.h"
 #include "string.h"
+#include "protocol_function.h"
+#include "queueHandlers.h"
 //#include "semphr.h"
 /*****************************    Defines    *******************************/
 enum MM_states // Main menu options
@@ -68,6 +70,12 @@ INT16U M2_USER_POSITION;
 INT16U HOME_M1_POS;
 INT16U HOME_M2_POS;
 
+// Used in "Enter wanted pos" state (Taking inputs from Keyboard)
+INT8U ch;
+INT8U int_wp_state;
+static INT8U Buf[6];
+INT16U new_encodervalueM1; // Enter the pos in degrees
+INT16U new_encodervalueM2; // Enter the pos in degrees
 /*****************************   Constants   *******************************/
 
 /*****************************   Variables   *******************************/
@@ -103,7 +111,7 @@ void menu_task(void *p)
         if (SHOW_CURRENT_POS == TRUE || get_square_key() == TRUE )
         {
           SHOW_CURRENT_POS = TRUE; // Makes sure we enter the if statement
-          if (get_star_key() == TRUE)
+          if (get_star_key() == TRUE || get_square_key() == TRUE)
           {
             SHOW_CURRENT_POS = FALSE; // This prevents entering the if statement
           }
@@ -127,7 +135,8 @@ void menu_task(void *p)
                 //KEY_BOARD_ACTIVE(); // Activate buttons for user inputs (For wanted position)
                 if (get_square_key() == TRUE && VALID_POSITION_M1) // If user have entered a valid position and accepted
                 {
-                  //UPDATE_POSITION_M1(M1_USER_POSITION); // User enters the wanted position, and position is send to motor
+                  xQueueOverwrite(Q_NEWPOSM1, &new_encodervalueM1); // Overwrite the position the motor is running to
+                  VALID_POSITION_M1 = FALSE;
                   SHOW_ENTER_POS_M1 = FALSE; // This prevents entering the if statement
                 }
               }
@@ -144,7 +153,8 @@ void menu_task(void *p)
                 //KEY_BOARD_ACTIVE(); // Activate buttons for user inputs (For wanted position)
                 if (get_square_key() == TRUE && VALID_POSITION_M2) // If user have entered a valid position and accepted
                 {
-                  //UPDATE_POSITION_M2(M2_USER_POSITION); // User enters the wanted position, and position is send to motor
+                  xQueueOverwrite(Q_NEWPOSM2, &new_encodervalueM2); // Overwrite the position the motor is running to
+                  VALID_POSITION_M2 = FALSE;
                   SHOW_ENTER_POS_M2 = FALSE; // This prevents entering the if statement
                 }
               }
@@ -214,6 +224,12 @@ void menu_task(void *p)
 
 void display_menu_task(void *p)
 {
+
+  ch = 0;
+  int_wp_state = 0;
+  new_encodervalueM1 = 0; // Enter the pos in degrees
+  new_encodervalueM2 = 0; // Enter the pos in degrees
+
   while (1)
   {
     if(SEM_MENU_UPDATED != NULL)
@@ -240,8 +256,10 @@ void display_menu_task(void *p)
 
         else if (MM_state == CURRENT_POSITION && SHOW_CURRENT_POS == TRUE)
         {
-          gfprintf( COM2, "%c%cPos M1:         %c", 0x1B, 0x80/*, getCurrentPos(M1)*/); // Pos M1: "aktuel pos hentede fra FPGA" (L1)
-          gfprintf( COM2, "%c%cPos M2:         %c", 0x1B, 0xC0/*, getCurrentPos(M2)*/); // Pos M2: "aktuel pos hentede fra FPGA" (L2)
+          INT16U pos_holderM1 = get_encodervalue(M1);
+          INT16U pos_holderM2 = get_encodervalue(M2);
+          gfprintf( COM2, "%c%cPos M1:%04d     ", 0x1B, 0x80, pos_holderM1); // Pos M1: "aktuel pos hentede fra FPGA" (L1)
+          gfprintf( COM2, "%c%cPos M2:%04d     ", 0x1B, 0xC0, pos_holderM2); // Pos M2: "aktuel pos hentede fra FPGA" (L2)
         }
 
         else if (MM_state == WANTED_POSITION && SHOW_WANTED_POS == TRUE && WP_state == MOTOR_1 && SHOW_ENTER_POS_M1 == FALSE)
@@ -259,13 +277,81 @@ void display_menu_task(void *p)
         else if (MM_state == WANTED_POSITION && SHOW_WANTED_POS == TRUE && WP_state == MOTOR_1 && SHOW_ENTER_POS_M1 == TRUE)
         {
           gfprintf( COM2, "%c%cEnter wanted pos", 0x1B, 0x80); // Indtast ønskede pos (L1)
-          gfprintf( COM2, "%c%cM1 pos: %c      ", 0x1B, 0xC0/*, getWantedPos(M1)*/); // M1 pos: "her indtaster man ønskede pos" (L2)
+          gfprintf( COM2, "%c%cM1 pos:  ", 0x1B, 0xC0); // M1 pos: "her indtaster man ønskede pos" (L2)
+
+          if( get_file( COM3, &ch ))
+          {
+            switch( int_wp_state )
+            {
+            case 0:
+              Buf[0] = ch;
+              gfprintf( COM2, "%c%c%c    ", 0x1B, 0xC9, ch );
+              int_wp_state = 1;
+              break;
+            case 1:
+              Buf[1] = ch;
+              gfprintf( COM2, "%c%c%c    ", 0x1B, 0xCA, ch );
+              int_wp_state = 2;
+              break;
+            case 2:
+              Buf[2] = ch;
+              gfprintf( COM2, "%c%c%c    ", 0x1B, 0xCB, ch );
+
+              new_encodervalueM1 = ((Buf[0]-'0')*100 + (Buf[1]-'0')*10 + (Buf[2]-'0'));
+              if(new_encodervalueM1 > 359 || new_encodervalueM1 < 0)
+              {
+                VALID_POSITION_M1 = FALSE;
+                int_wp_state = 0;
+                gfprintf( COM2, "%c%cM1 pos:         ", 0x1B, 0xC0); // M1 pos: "her indtaster man ønskede pos" (L2)
+              }
+              else
+              {
+                VALID_POSITION_M1 = TRUE;
+                int_wp_state = 0;
+              }
+              break;
+            }
+          }
         }
 
         else if (MM_state == WANTED_POSITION && SHOW_WANTED_POS == TRUE && WP_state == MOTOR_2 && SHOW_ENTER_POS_M2 == TRUE)
         {
           gfprintf( COM2, "%c%cEnter wanted pos", 0x1B, 0x80); // Indtast ønskede pos (L1)
-          gfprintf( COM2, "%c%cM2 pos: %c      ", 0x1B, 0xC0/*, getWantedPos(M2)*/); // M2 pos: "her indtaster man ønskede pos" (L2)
+          gfprintf( COM2, "%c%cM2 pos:  ", 0x1B, 0xC0); // M2 pos: "her indtaster man ønskede pos" (L2)
+
+          if( get_file( COM3, &ch ))
+          {
+            switch( int_wp_state )
+            {
+            case 0:
+              Buf[0] = ch;
+              gfprintf( COM2, "%c%c%c    ", 0x1B, 0xC9, ch );
+              int_wp_state = 1;
+              break;
+            case 1:
+              Buf[1] = ch;
+              gfprintf( COM2, "%c%c%c    ", 0x1B, 0xCA, ch );
+              int_wp_state = 2;
+              break;
+            case 2:
+              Buf[2] = ch;
+              gfprintf( COM2, "%c%c%c    ", 0x1B, 0xCB, ch );
+
+              new_encodervalueM2 = ((Buf[0]-'0')*100 + (Buf[1]-'0')*10 + (Buf[2]-'0'));
+              if(new_encodervalueM2 > 359 || new_encodervalueM2 < 0)
+              {
+                VALID_POSITION_M2 = FALSE;
+                int_wp_state = 0;
+                gfprintf( COM2, "%c%cM2 pos:         ", 0x1B, 0xC0); // M2 pos: "her indtaster man ønskede pos" (L2)
+              }
+              else
+              {
+                VALID_POSITION_M2 = TRUE;
+                int_wp_state = 0;
+              }
+              break;
+            }
+          }
         }
 
         else if (MM_state == HOME_POSTION && SHOW_HOME == TRUE && H_state == HOME_M1)

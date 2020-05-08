@@ -19,7 +19,8 @@ void spiTask (void *p)
                                                                  // Execute code.
 
         // Motor 1
-        write_spi(spiSendData++);
+        xQueuePeek(Q_SPIDATATXM1, &spiSendData, 0);
+        write_spi(spiSendData);
         temp1 = read_spi();
         if(temp1 & motor_select_MASK == FALSE) // SPI values read from M1
         {
@@ -35,7 +36,8 @@ void spiTask (void *p)
 
 
         // Motor 2
-        write_spi(spiSendData++);
+        xQueuePeek(Q_SPIDATATXM2, &spiSendData, 0);
+        write_spi(spiSendData);
         temp2 = read_spi();
         if(temp2 & motor_select_MASK == FALSE)
         {
@@ -49,5 +51,7 @@ void spiTask (void *p)
           xQueueOverwrite(Q_SPIDATAM2, &temp2);
 
         }
+
+        vTaskResume( regTaskHandle );
     }
 }

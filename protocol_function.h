@@ -30,7 +30,8 @@
 #include "queueHandlers.h"
 /*****************************    Defines    *******************************/
 
-
+#define M1  FALSE
+#define M2  TRUE
 
 /********************** External declaration of Variables ******************/
 
