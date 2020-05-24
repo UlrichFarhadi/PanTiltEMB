@@ -25,15 +25,17 @@
 /***************************** Include files *******************************/
 #include "emp_type.h"
 #include <stdlib.h> //malloc and free
+#include "controller.h"
 
 /*****************************    Defines    *******************************/
+/*
 typedef struct controller{
     INT8U a_len; //INT16U -> unsigned short
     INT8U b_len;
     FP64 vals[]; //MAX VAL OF 2^16.
 
 };
-
+*/
 /*****************************   Constants   *******************************/
 
 /*****************************   Variables   *******************************/
@@ -83,7 +85,7 @@ void removeController(struct controller* ctr)
     free(ctr);
 }
 
-INT16S runController(struct controller* ctr, FP64 in_val)
+FP64 runController(struct controller* ctr, FP64 in_val)
 /*****************************************************************************
 *   Input    : Puts in_val as input to controller with pointer ctr.
 *   Output   : Corresponding output to given input.

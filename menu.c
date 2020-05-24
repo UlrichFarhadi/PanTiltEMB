@@ -132,7 +132,6 @@ void menu_task(void *p)
               if ((SHOW_ENTER_POS_M1 == TRUE) || (get_square_key() == TRUE))
               {
                 SHOW_ENTER_POS_M1 = TRUE; // Makes sure we enter the if statement
-                //KEY_BOARD_ACTIVE(); // Activate buttons for user inputs (For wanted position)
                 if (get_square_key() == TRUE && VALID_POSITION_M1) // If user have entered a valid position and accepted
                 {
                   xQueueOverwrite(Q_NEWPOSM1, &new_encodervalueM1); // Overwrite the position the motor is running to
@@ -150,7 +149,6 @@ void menu_task(void *p)
               if (SHOW_ENTER_POS_M2 == TRUE || get_square_key() == TRUE)
               {
                 SHOW_ENTER_POS_M2 = TRUE; // Makes sure we enter the if statement
-                //KEY_BOARD_ACTIVE(); // Activate buttons for user inputs (For wanted position)
                 if (get_square_key() == TRUE && VALID_POSITION_M2) // If user have entered a valid position and accepted
                 {
                   xQueueOverwrite(Q_NEWPOSM2, &new_encodervalueM2); // Overwrite the position the motor is running to
@@ -239,7 +237,7 @@ void display_menu_task(void *p)
         if(MM_state == CURRENT_POSITION && SHOW_CURRENT_POS == FALSE)
         {
           gfprintf( COM2, "%c%cMenu            ", 0x1B, 0x80); // Menu (L1)
-          gfprintf( COM2, "%c%c- Current pos   ", 0x1B, 0xC0); // - Nuværende pos (L2)
+          gfprintf( COM2, "%c%c- Current pos   ", 0x1B, 0xC0); // - Current pos (L2)
         }
 
         else if (MM_state == WANTED_POSITION && SHOW_WANTED_POS == FALSE)
@@ -298,7 +296,7 @@ void display_menu_task(void *p)
               gfprintf( COM2, "%c%c%c    ", 0x1B, 0xCB, ch );
 
               new_encodervalueM1 = ((Buf[0]-'0')*100 + (Buf[1]-'0')*10 + (Buf[2]-'0'));
-              if(new_encodervalueM1 > 359 || new_encodervalueM1 < 0)
+              if(new_encodervalueM1 > 180 || new_encodervalueM1 < 0)
               {
                 VALID_POSITION_M1 = FALSE;
                 int_wp_state = 0;
@@ -365,7 +363,7 @@ void display_menu_task(void *p)
           gfprintf( COM2, "%c%cHome M2?        ", 0x1B, 0x80); // Home M2 (L1)
           gfprintf( COM2, "%c%cY/N             ", 0x1B, 0xC0); // Y/N (L2)
         }
-        //xSemaphoreGive(SEM_MENU_UPDATED);
+
       }
     }
   }

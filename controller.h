@@ -17,8 +17,8 @@
 *
 *****************************************************************************/
 
-#ifndef PANTILTEMB_CONTROLLER_H_
-#define PANTILTEMB_CONTROLLER_H_
+#ifndef CONTROLLER_H_
+#define CONTROLLER_H_
 
 /***************************** Include files *******************************/
 #include "emp_type.h"

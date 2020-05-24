@@ -25,9 +25,9 @@ FP64 temp_M2_ref = 0;
 
 FP64 encoder2RadM1 = 0;
 FP64 encoder2RadM2 = 0;
-
+  
 /*****************************   Functions   *******************************/
-void reg_Task (void *p)
+void reg_Task(void *p)
 {
   struct controller* ctrM1 = addController(a1, 2, b1, 3);
   struct controller* ctrM2 = addController(a2, 2, b2, 3);
@@ -37,7 +37,7 @@ void reg_Task (void *p)
     /*
     --------------------------Regulator In and Outputs----------------------------
     Regulator Input in Radians
-    Regulator Output in Volt from 0 to 12 degrees, need to be converted to PWM duty cycle of XXX bits
+    Regulator Output in Volt from 0 to 12 degrees, need to be converted to PWM duty cycle of xx bits
     --------------------------------Motor Limits----------------------------------
     M1 has a range of +- 85 degrees ( 170 degrees --> encoder 510)
     M2 has a range of 360 degrees ( 360 degrees --> encoder 1080)
@@ -73,7 +73,7 @@ void reg_Task (void *p)
   temp_Queue_Holder |= M1_Current_Radians_Binary_To_PWM;
 
   // Send to the queue that SPI uses.
-  xQueueOverwrite( Q_SPIDATATXM1, &spiSendData );
+  xQueueOverwrite( Q_SPIDATATXM1, &temp_Queue_Holder );
 
   //--------------------------------Motor 2 Regulation--------------------------
   temp_Queue_Holder = 0; // Reset value
@@ -95,9 +95,9 @@ void reg_Task (void *p)
   temp_Queue_Holder |= M2_Current_Radians_Binary_To_PWM;
 
   // Send to the queue that SPI uses.
-  xQueueOverwrite( Q_SPIDATATXM2, &spiSendData );
+  xQueueOverwrite( Q_SPIDATATXM2, &temp_Queue_Holder );
 
-}
+ }
 
 }
 

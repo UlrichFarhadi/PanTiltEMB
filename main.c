@@ -116,7 +116,7 @@ int main(void)
   xTaskCreate(key_task, "keyTask", configMINIMAL_STACK_SIZE, NULL, LOW_PRIO, &keyTaskHandle);
   xTaskCreate(display_menu_task, "displayMenuTask", configMINIMAL_STACK_SIZE, NULL, LOW_PRIO, &displayMenuTaskHandle);
   xTaskCreate(menu_task, "menuTask", configMINIMAL_STACK_SIZE, NULL, LOW_PRIO, &menuTaskHandle);
-//  xTaskCreate(reg_Task, "regTask", configMINIMAL_STACK_SIZE, NULL, HIGH_PRIO, &regTaskHandle);
+  xTaskCreate(reg_Task, "regTask", ( unsigned short ) 150 , NULL, HIGH_PRIO, &regTaskHandle);
 
 
   // Start the scheduler.
