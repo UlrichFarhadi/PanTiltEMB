@@ -4,7 +4,7 @@
 *
 * MODULENAME.: key.h
 *
-* PROJECT....: EMP
+* PROJECT....: Semesterproject
 *
 * DESCRIPTION: Test.
 *
@@ -14,7 +14,7 @@
 * YYMMDD
 * --------------------
 * 150321  MoH   Module created.
-*
+* 200525  TAK   Module rewritten to work with FreeRTOS
 *****************************************************************************/
 
 #ifndef _KEY_H

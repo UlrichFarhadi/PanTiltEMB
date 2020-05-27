@@ -4,7 +4,7 @@
 *
 * MODULENAME.: ui.c
 *
-* PROJECT....: EMP
+* PROJECT....: Semesterproject
 *
 * DESCRIPTION: See module specification file (.h-file).
 *
@@ -13,7 +13,7 @@
 * Date    Id    Change
 * YYMMDD
 * --------------------
-* 050128  KA    Module created.
+* 200425  TAK   Module created
 *
 *****************************************************************************/
 
@@ -22,13 +22,8 @@
 #include "tm4c123gh6pm.h"
 #include "emp_type.h"
 #include "gpio.h"
-//#include "systick.h"
-//#include "tmodel.h"
-//#include "systick.h"
 #include "ui.h"
-//#include "rtc.h"
 #include "string.h"
-//#include "glob_def.h"
 /*****************************    Defines    *******************************/
 
 /*****************************   Constants   *******************************/

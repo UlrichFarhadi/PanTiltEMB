@@ -4,7 +4,7 @@
 *
 * MODULENAME.: gpio.c
 *
-* PROJECT....: EMP
+* PROJECT....: Semesterproject
 *
 * DESCRIPTION: See module specification file (.h-file).
 *
@@ -41,7 +41,6 @@ void init_gpio(void)
 
   // Enable the GPIO port that is used for the on-board LED.
   SYSCTL_RCGC2_R  =  SYSCTL_RCGC2_GPIOA |SYSCTL_RCGC2_GPIOC | SYSCTL_RCGC2_GPIOD | SYSCTL_RCGC2_GPIOE |SYSCTL_RCGC2_GPIOF;
- // SYSCTL_RCGC1_R |= SYSCTL_RCGC1_UART0;
 
   // Do a dummy read to insert a few cycles after enabling the peripheral.
   dummy = SYSCTL_RCGC2_R;

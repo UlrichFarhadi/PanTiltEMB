@@ -43,7 +43,6 @@ SDU Semesterproject 4 Group 1
 #include "semaphoreHandlers.h"
 #include "file.h"
 #include "protocol_function.h"
-//#include "tmodel.h"
 
 /*****************************    Defines    *******************************/
 //#define USERTASK_STACK_SIZE configMINIMAL_STACK_SIZE
@@ -110,8 +109,7 @@ int main(void)
 
   // Start the tasks.
   // ----------------
-  xTaskCreate(myTaskTest, "taskTest", configMINIMAL_STACK_SIZE, NULL, LOW_PRIO, &myTaskTestHandle);
-//  xTaskCreate(spiTask, "spiTask", configMINIMAL_STACK_SIZE, NULL, HIGH_PRIO, &spiTaskHandle);
+  xTaskCreate(spiTask, "spiTask", configMINIMAL_STACK_SIZE, NULL, HIGH_PRIO, &spiTaskHandle);
   xTaskCreate(lcd_task, "lcdTask", configMINIMAL_STACK_SIZE, NULL, LOW_PRIO, &lcdTaskHandle);
   xTaskCreate(key_task, "keyTask", configMINIMAL_STACK_SIZE, NULL, LOW_PRIO, &keyTaskHandle);
   xTaskCreate(display_menu_task, "displayMenuTask", configMINIMAL_STACK_SIZE, NULL, LOW_PRIO, &displayMenuTaskHandle);

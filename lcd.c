@@ -2,9 +2,9 @@
 * University of Southern Denmark
 * Embedded C Programming (ECP)
 *
-* MODULENAME.: leds.c
+* MODULENAME.: led.c
 *
-* PROJECT....: ECP
+* PROJECT....: Semesterproject
 *
 * DESCRIPTION: See module specification file (.h-file).
 *
@@ -14,7 +14,7 @@
 * YYMMDD
 * --------------------
 * 050128  KA    Module created.
-*
+* 200525  TAK   Module rewritten to work with FreeRTOS
 *****************************************************************************/
 
 /***************************** Include files *******************************/

@@ -4,7 +4,7 @@
 *
 * MODULENAME.: file.c
 *
-* PROJECT....: EMP
+* PROJECT....: Semesterproject
 *
 * DESCRIPTION: See module specification file (.h-file).
 *
@@ -14,19 +14,15 @@
 * YYMMDD
 * --------------------
 * 150322  MoH   Module created.
-*
+* 200525  TAK   PeekKeyboard added as COM4 and removed UART
 *****************************************************************************/
 
 /***************************** Include files *******************************/
 #include <stdint.h>
 #include "tm4c123gh6pm.h"
 #include "emp_type.h"
-//#include "glob_def.h"
-//#include "rtcs.h"
 #include "file.h"
-//#include "tmodel.h"
 #include "key.h"
-//#include "uart.h"
 #include "lcd.h"
 
 /*****************************    Defines    *******************************/
@@ -73,8 +69,7 @@ INT8U init_files() //extern
 	  pof[i].put = NULL;
 	  pof[i].get = NULL;
   }
-//  pof[COM1].put = uart0_put_q;
-//  pof[COM1].get = uart0_get_q;
+
   pof[COM2].put = wr_ch_LCD;
   pof[COM3].get = get_keyboard;
   pof[COM4].get = peek_keyboard;

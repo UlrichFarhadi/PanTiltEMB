@@ -4,7 +4,7 @@
 *
 * MODULENAME.: protocol_function.c
 *
-* PROJECT....: EMP
+* PROJECT....: Semesterproject
 *
 * DESCRIPTION: See module specification file (.h-file).
 *
@@ -13,7 +13,7 @@
 * Date    Id    Change
 * YYMMDD
 * --------------------
-* 050128  KA    Module created.
+* 200425  TAK   Module created
 *
 *****************************************************************************/
 
@@ -26,7 +26,6 @@ INT16U home_Sw1_MASK     = 2;
 INT16U motordir_MASK     = 4;
 INT16U encodervalue_MASK = 0x7FF0; // dec = 32752 --> 0b 0111 1111 1111 0000
 
-
 /*****************************   Constants   *******************************/
 
 /*****************************   Variables   *******************************/
@@ -37,7 +36,7 @@ INT16U encodervalue_MASK = 0x7FF0; // dec = 32752 --> 0b 0111 1111 1111 0000
 INT16U get_encodervalue(BOOLEAN MOTOR)
 {
   INT16U encodervalue_holder;
-  //INT16U temp_encoder_holder = 0;
+  
   if (MOTOR == FALSE) // FALSE = M1, TRUE = M2
   {
     if(Q_SPIDATAM1 != 0) // Check if the SPIDATA queue for M1 is empty
@@ -46,6 +45,7 @@ INT16U get_encodervalue(BOOLEAN MOTOR)
       {
         encodervalue_holder &= encodervalue_MASK; // Keep the bits from the encoder only, rest is set to zero.
         encodervalue_holder = (encodervalue_holder >> 4); // Bitshift with 4 to get int value
+        encodervalue_holder = encodervalue_holder - RELATIVE_ENCODERVAL_M1;
       }
     }
   }
@@ -57,6 +57,7 @@ INT16U get_encodervalue(BOOLEAN MOTOR)
       {
         encodervalue_holder &= encodervalue_MASK; // Keep the bits from the encoder only, rest is set to zero.
         encodervalue_holder = (encodervalue_holder >> 4); // Bitshift with 4 to get int value
+        encodervalue_holder = encodervalue_holder - RELATIVE_ENCODERVAL_M2;
       }
     }
   }

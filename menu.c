@@ -4,7 +4,7 @@
 *
 * MODULENAME.: menu.c
 *
-* PROJECT....: ECP
+* PROJECT....: Semesterproject
 *
 * DESCRIPTION: See module specification file (.h-file).
 *
@@ -13,21 +13,18 @@
 * Date    Id    Change
 * YYMMDD
 * --------------------
-* 090315  MoH   Module created.
+* 200425  TAK   Module created
 *
 *****************************************************************************/
 
 /***************************** Include files *******************************/
 #include "emp_type.h"
 #include "menu.h"
-//#include "glob_def.h"
 #include "file.h"
-///#include "tmodel.h"
 #include "ui.h"
 #include "string.h"
 #include "protocol_function.h"
 #include "queueHandlers.h"
-//#include "semphr.h"
 /*****************************    Defines    *******************************/
 enum MM_states // Main menu options
 {
@@ -98,6 +95,8 @@ void menu_task(void *p)
 
   VALID_POSITION_M1 = FALSE;
   VALID_POSITION_M2 = FALSE;
+  HOMING_M1_ACTIVE = FALSE;
+  HOMING_M2_ACTIVE = FALSE;
 
   MM_state = CURRENT_POSITION;
   WP_state = MOTOR_1;
@@ -182,7 +181,7 @@ void menu_task(void *p)
                 SHOW_ENTER_HOME_M1 = TRUE; // Makes sure we enter the if statement
                 if (get_square_key() == TRUE)
                 {
-                  //UPDATE_POSITION_M1(HOME_M1_POS); // Update position of M1 with Home Pos
+                  HOMING_M1_ACTIVE = TRUE;
                 }
               }
               if (get_star_key() == TRUE)
@@ -197,7 +196,7 @@ void menu_task(void *p)
                 SHOW_ENTER_HOME_M2 = TRUE; // Makes sure we enter the if statement
                 if (get_square_key() == TRUE)
                 {
-                  //UPDATE_POSITION_M2(HOME_M2_POS); // Update position of M2 with Home Pos
+                  HOMING_M2_ACTIVE = TRUE;
                 }
               }
               if (get_star_key() == TRUE) {
@@ -234,7 +233,19 @@ void display_menu_task(void *p)
     {
       if (xSemaphoreTake(SEM_MENU_UPDATED, 0) == pdTRUE)
       {
-        if(MM_state == CURRENT_POSITION && SHOW_CURRENT_POS == FALSE)
+        if (HOMING_M1_ACTIVE == TRUE)
+        {
+          gfprintf( COM2, "%c%cHoming M1       ", 0x1B, 0x80); // Homing M1 (L1)
+          gfprintf( COM2, "%c%cPlease wait     ", 0x1B, 0xC0); // Please wait (L2)
+        }
+
+        else if (HOMING_M2_ACTIVE == TRUE)
+        {
+          gfprintf( COM2, "%c%cHoming M2       ", 0x1B, 0x80); // Homing M2 (L1)
+          gfprintf( COM2, "%c%cPlease wait     ", 0x1B, 0xC0); // Please wait (L2)
+        }
+
+        else if(MM_state == CURRENT_POSITION && SHOW_CURRENT_POS == FALSE)
         {
           gfprintf( COM2, "%c%cMenu            ", 0x1B, 0x80); // Menu (L1)
           gfprintf( COM2, "%c%c- Current pos   ", 0x1B, 0xC0); // - Current pos (L2)
@@ -296,7 +307,7 @@ void display_menu_task(void *p)
               gfprintf( COM2, "%c%c%c    ", 0x1B, 0xCB, ch );
 
               new_encodervalueM1 = ((Buf[0]-'0')*100 + (Buf[1]-'0')*10 + (Buf[2]-'0'));
-              if(new_encodervalueM1 > 180 || new_encodervalueM1 < 0)
+              if(new_encodervalueM1 > 170 || new_encodervalueM1 < 0)
               {
                 VALID_POSITION_M1 = FALSE;
                 int_wp_state = 0;

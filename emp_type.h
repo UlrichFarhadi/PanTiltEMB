@@ -4,7 +4,7 @@
 *
 * MODULENAME.: emp_type.h
 *
-* PROJECT....: EMP
+* PROJECT....: Semesterproject
 *
 * DESCRIPTION: Definements of variable types.
 *

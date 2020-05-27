@@ -4,7 +4,7 @@
 *
 * MODULENAME.: controller.c(.h)
 *
-* PROJECT....: PanTilt
+* PROJECT....: Semesterproject
 *
 * DESCRIPTION: -
 *
@@ -18,7 +18,7 @@
 * Date    Id    Change
 * 5 May 2020
 * --------------------
-* 090215  MoH   Module created.
+* 200505  Thagg   Module created.
 *
 *****************************************************************************/
 

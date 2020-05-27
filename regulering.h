@@ -16,6 +16,10 @@
 #include "queueHandlers.h" // queue.h file could come from this include as well
 #include "protocol_function.h" // Includes functions for peeking in SPI RX queues
 #include "controller.h"
+#include "menu.h"
+
+/*****************************    Defines    *******************************/
+
 
 void reg_Task(void *p);
 

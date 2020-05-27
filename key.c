@@ -4,7 +4,7 @@
 *
 * MODULENAME.: key.c
 *
-* PROJECT....: EMP
+* PROJECT....: Semesterproject
 *
 * DESCRIPTION: See module specification file (.h-file).
 *
@@ -14,7 +14,7 @@
 * YYMMDD
 * --------------------
 * 150321  MoH   Module created.
-*
+* 200525  TAK   Module rewritten to work with FreeRTOS
 *****************************************************************************/
 
 /***************************** Include files *******************************/

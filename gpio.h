@@ -4,7 +4,7 @@
 *
 * MODULENAME.: gpio.h
 *
-* PROJECT....: ECP
+* PROJECT....: Semesterproject
 *
 * DESCRIPTION: Test.
 *

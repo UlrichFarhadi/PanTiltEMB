@@ -4,7 +4,7 @@
 *
 * MODULENAME.: protocol_function.h
 *
-* PROJECT....: EMP
+* PROJECT....: Semesterproject
 *
 * DESCRIPTION: Test.
 *
@@ -13,7 +13,7 @@
 * Date    Id    Change
 * YYMMDD
 * --------------------
-* 050128  KA    Module created.
+* 200425  TAK   Module created
 *
 *****************************************************************************/
 
@@ -33,6 +33,8 @@
 #define M1  FALSE
 #define M2  TRUE
 
+INT16U RELATIVE_ENCODERVAL_M1;
+INT16U RELATIVE_ENCODERVAL_M2;
 /********************** External declaration of Variables ******************/
 
 /*****************************   Constants   *******************************/
