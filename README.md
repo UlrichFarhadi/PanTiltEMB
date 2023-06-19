@@ -1,4 +1,4 @@
-# Robot Pan/Tilt System
+# Robotic Pan/Tilt System
 
 Embedded software for controlling a robotic Pan/Tilt system.
 
