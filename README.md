@@ -59,5 +59,3 @@ This project focuses on creating embedded software for controlling a robotic Pan
 ## Note
 
 This README provides a high-level overview of the project structure and files. For detailed explanations of each file and folder, please refer to the comments and documentation within the source code.
-
-Feel free to explore and modify the code to suit your specific Pan/Tilt system requirements. Happy coding!
